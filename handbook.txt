@@ -1,0 +1,15 @@
+# 1) 生成 T1 与分割（读 FreeSurfer，自带支持 OUT_BASE）
+OUT_BASE=/home/xue/data/prf_result \
+bash first_prep_mrvista_anat.sh
+
+# 2) rescale + 丢前导TR
+OUT_BASE=/home/xue/data/prf_result \
+SPACE_TAG=space-T1w DROP_TR=6 MATLAB_BIN=matlab \
+bash second_auto_rescale_and_clip.sh
+
+# 3) 建立 mrVista 会话
+OUT_BASE=/home/xue/data/prf_result \
+INPLANE_NAME=clipped_00.nii FUNC_GLOB='clipped_*.nii' MATLAB_BIN=matlab \
+bash third_mk_mrvista_session.sh
+
+#4)进入每一个被试每一个session的路径下，然后进行rxAlign
